@@ -1,4 +1,5 @@
-from config import PIDGIN_TOKENS
+from config import PIDGIN_TOKENS, PROMPTS
+from translate import translate_from_en
 
 
 
@@ -10,10 +11,14 @@ def likely_pidgin(text: str) -> bool:
     hits = sum(1 for tok in PIDGIN_TOKENS if tok in tl)
     return hits >= 2
 
-def localize_ack(src_lang: str) -> str:
-    if src_lang == "en": return "Got it. You said: "
-    if src_lang == "ha": return "Na karɓa. Ka ce: "
-    if src_lang == "pcm": return "I don hear you. You talk say: "
-    if src_lang == "yo": return "Mo ti gba. O sọ pé: "
-    if src_lang == "ig": return "Enwetara m. I kwuru na: "
-    return "Got it. You said: "
+def localize(key: str, lang: str, **kwargs) -> str:
+    base = PROMPTS.get(lang) or PROMPTS["en"]
+    s = base.get(key) or PROMPTS["en"].get(key, "")
+    try:
+        s = s.format(**kwargs)
+    except Exception:
+        pass
+    # Push through Translate for Hausa to make phrasing more natural if we used EN defaults
+    if lang=="ha" and PROMPTS.get("ha") is None:
+        s = translate_from_en(s, "ha")
+    return s
