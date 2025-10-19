@@ -1,3 +1,5 @@
+from typing import Optional
+
 def ok(body="OK", status=200, content_type="text/plain"):
     return {"statusCode": status, "headers": {"Content-Type": content_type}, "body": body}
 
