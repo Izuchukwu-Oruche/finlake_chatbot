@@ -32,11 +32,8 @@ def translate_from_en(text: str, tgt_lang: str) -> str:
             print("Translate EN-> error:", e)
             return text
 
-    # Lightweight fallbacks until we wire proper translators:
-    if tgt_lang == "pcm":
-        return f"I don hear you. You talk say: {text}"
-    if tgt_lang == "yo":
-        return f"Mo ti gba ifiranṣẹ rẹ. O sọ pé: {text}"
-    if tgt_lang == "ig":
-        return f"Enwetala m ozi gi. I kwughị: {text}"
+    # Light fallbacks for pcm/yo/ig
+    if tgt_lang == "pcm": return text.replace("You said:", "You talk say:").replace("How much", "How much").replace("Please", "Abeg")
+    if tgt_lang == "yo":  return text  # we mostly use PROMPTS[yo] directly
+    if tgt_lang == "ig":  return text
     return text
