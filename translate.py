@@ -15,7 +15,7 @@ def translate_to_en(text: str, src_lang: str) -> str:
         except Exception as e:
             print("Translate->EN error:", e)
             return text
-    return text
+
 
 def translate_from_en(text: str, tgt_lang: str) -> str:
     if not text or tgt_lang == "en":
